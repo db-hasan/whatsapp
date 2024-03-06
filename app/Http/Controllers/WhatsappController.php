@@ -15,19 +15,6 @@ class WhatsappController extends Controller
     public function whatsapp(){
         $whatsapp = Whatsapp::all();
         return view('whatsapp', compact('whatsapp'));
-
-
-        // $response = Http::get('https://jsonplaceholder.typicode.com/posts');
-        // if ($response->successful()) {
-        //     $posts = $response->json();
-        //         return view('whatsapp', compact('posts', 'whatsapp'));
-        //     } else {
-        //     return redirect()->back()->with('error', 'Failed to fetch data from the API.');
-        // }
-        // @foreach ($posts as $item)
-        // <span>{{ $item['userId'] }}</span>
-        // <span>{{ $item['id'] }}</span>
-        // @endforeach
     }
     
     public function import(Request $request): RedirectResponse
@@ -68,3 +55,17 @@ class WhatsappController extends Controller
     }
 
 }
+
+// public function whatsapp(){
+//     $response = Http::get('https://jsonplaceholder.typicode.com/posts');
+//     if ($response->successful()) {
+//         $posts = $response->json();
+//             return view('whatsapp', compact('posts'));
+//         } else {
+//         return redirect()->back()->with('error', 'Failed to fetch data from the API.');
+//     }
+//     @foreach ($posts as $item)
+//     <span>{{ $item['userId'] }}</span>
+//     <span>{{ $item['id'] }}</span>
+//     @endforeach
+// }

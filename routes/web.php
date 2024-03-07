@@ -17,9 +17,13 @@ use App\Http\Controllers\CustomerController;
 
 Route::get('/', [WhatsappController::class, 'whatsApp'])->name('whatsApp');
 Route::post('/', [WhatsappController::class, 'import'])->name('import');
+Route::get('/scrape', [WhatsappController::class, 'scrape'])->name('scrape');
 
 Route::get('/whatsApp', [App\Http\Controllers\CustomerController::class, 'indexPackage']);
 Route::post('/whatsApp', [App\Http\Controllers\CustomerController::class, 'importPackage'])->name('dataimport');
+
+
+
 
 
 

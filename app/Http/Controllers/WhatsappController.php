@@ -10,6 +10,9 @@ use Illuminate\Support\Str;
 use App\Models\Whatsapp;
 use Session;
 
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
 class WhatsappController extends Controller
 {
     public function whatsapp(){
@@ -52,6 +55,46 @@ class WhatsappController extends Controller
         }
 
         return redirect()->route('import')->with('success', 'CSV file uploaded and processed successfully.');
+    }
+
+    public function scrape(){
+        $client = new Client();
+
+        try {
+            $response = $client->request('GET', 'https://portfolio.helpsx.com/');
+            $html = $response->getBody()->getContents();
+            // dd($html);
+            
+
+            $crawler = new Crawler($html);
+
+            // For example, to extract the title of the page:
+            $title = $crawler->filter('title')->text();
+            echo "Title: $title\n";
+
+            // Example: Extracting text from a specific element with class "some-class"
+            $text = $crawler->filter('.css-901oao')->text();
+            echo "<br>Text: $text\n";
+
+            // Example: Extracting href attribute from links
+            $links = $crawler->filter('a')->extract(['href']);
+            foreach ($links as $link) {
+                echo "<br>Link: $link\n";
+            }
+
+            //  Filter <button> elements
+             $button = $crawler->filter('button');
+             foreach ($button as $item) {
+                 echo "<br> Button: " . $item->textContent . "\n";
+             }
+
+            $h1Elements = $crawler->filter('h1');
+            foreach ($h1Elements as $element) {
+                echo "H1 Element: " . $element->textContent . "\n";
+            }
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
 }

@@ -73,7 +73,7 @@ class WhatsappController extends Controller
             echo "Title: $title\n";
 
             // Example: Extracting text from a specific element with class "some-class"
-            $text = $crawler->filter('.css-901oao')->text();
+            $text = $crawler->filter('.bio')->text();
             echo "<br>Text: $text\n";
 
             // Example: Extracting href attribute from links
@@ -96,6 +96,27 @@ class WhatsappController extends Controller
             echo "Error: " . $e->getMessage();
         }
     }
+
+    // public function scrape(){
+    //     $client = new \GuzzleHttp\Client();
+    
+    //     try {
+    //         $response = $client->request('GET', 'https://wa.me/1718513591/');
+    //         $html = $response->getBody()->getContents();
+    
+    //         // Output the HTML code
+    //         echo "HTML Code:\n";
+    //         echo $html;
+    
+    //         $crawler = new \Symfony\Component\DomCrawler\Crawler($html);
+    
+    //         // Your scraping logic here...
+    
+    //     } catch (\Exception $e) {
+    //         echo "Error: " . $e->getMessage();
+    //     }
+    // }
+    
 
 }
 

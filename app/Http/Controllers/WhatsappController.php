@@ -59,64 +59,40 @@ class WhatsappController extends Controller
 
     public function scrape(){
         $client = new Client();
-
         try {
-            $response = $client->request('GET', 'https://portfolio.helpsx.com/');
+            $response = $client->request('GET', 'https://www.yellowpages.com/glendale-ca/hotels');
             $html = $response->getBody()->getContents();
-            // dd($html);
+
+            // $crawler = new Crawler($html);
+            // $names = $crawler->filter('.business-name')->extract(['_text']);
+            // $numbers = $crawler->filter('.phones')->extract(['_text']);
+            // return view('whatsapp', compact('names', 'numbers'));
+
+            $crawler    = new Crawler($html);
+            $names      = $crawler->filter('.business-name')->extract(['_text']);
+            $numbers    = $crawler->filter('.phones')->extract(['_text']);
+            $streets     = $crawler->filter('.street-address')->extract(['_text']);
+            $locations  = $crawler->filter('.locality')->extract(['_text']);
+            $urls       = $crawler->filter('a.track-visit-website')->extract(['href']);
+            $hotels = [];
+            $length = min(count($names), count($numbers));
+            for ($i = 0; $i < $length; $i++) {
+                $hotel = [
+                    'name'      => $names[$i] ?? null,
+                    'number'    => $numbers[$i] ?? null,
+                    'street'    => $streets[$i] ?? null,
+                    'location'  => $locations[$i] ?? null,
+                    'url'       => $urls[$i] ?? null,
+                ];
+                $hotels[] = $hotel;
+            }
             
+            return view('whatsapp', compact('hotels'));
 
-            $crawler = new Crawler($html);
-
-            // For example, to extract the title of the page:
-            $title = $crawler->filter('title')->text();
-            echo "Title: $title\n";
-
-            // Example: Extracting text from a specific element with class "some-class"
-            $text = $crawler->filter('.bio')->text();
-            echo "<br>Text: $text\n";
-
-            // Example: Extracting href attribute from links
-            $links = $crawler->filter('a')->extract(['href']);
-            foreach ($links as $link) {
-                echo "<br>Link: $link\n";
-            }
-
-            //  Filter <button> elements
-             $button = $crawler->filter('button');
-             foreach ($button as $item) {
-                 echo "<br> Button: " . $item->textContent . "\n";
-             }
-
-            $h1Elements = $crawler->filter('h1');
-            foreach ($h1Elements as $element) {
-                echo "H1 Element: " . $element->textContent . "\n";
-            }
         } catch (\Exception $e) {
             echo "Error: " . $e->getMessage();
         }
     }
-
-    // public function scrape(){
-    //     $client = new \GuzzleHttp\Client();
-    
-    //     try {
-    //         $response = $client->request('GET', 'https://wa.me/1718513591/');
-    //         $html = $response->getBody()->getContents();
-    
-    //         // Output the HTML code
-    //         echo "HTML Code:\n";
-    //         echo $html;
-    
-    //         $crawler = new \Symfony\Component\DomCrawler\Crawler($html);
-    
-    //         // Your scraping logic here...
-    
-    //     } catch (\Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    // }
-    
 
 }
 
